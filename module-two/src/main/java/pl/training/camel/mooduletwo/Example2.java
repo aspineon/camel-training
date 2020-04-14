@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class Example2 extends RouteBuilder {
 
     @Override
-    public void configure() throws Exception {
+    public void configure() {
         from("quartz://get?cron=0/15+*+*+*+*+?")
                 .to("http://raw.githubusercontent.com/landrzejewski/camel-training/master/module-two/source/orders.csv")
                 .convertBodyTo(String.class)
