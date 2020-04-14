@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<order name="Camel in action" amount="1" test="true"/>
+<order name="Camel in action" amount="1" test="true" premium="true"/>

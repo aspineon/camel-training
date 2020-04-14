@@ -10,7 +10,7 @@ public class Application {
 
     public static void main(String[] args) throws InterruptedException {
         try (AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(Application.class)) {
-            Thread.sleep(10_000);
+            Thread.sleep(100_000);
         }
     }
 
