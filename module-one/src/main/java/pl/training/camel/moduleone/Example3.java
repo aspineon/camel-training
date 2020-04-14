@@ -20,6 +20,7 @@ public class Example3 {
             @Override
             public void configure() {
                 from("ftp://ftp.cluster029.hosting.ovh.net/www?delay=5000&delete=false&username=mobiledebw&password=RAW(xS2rDgt6e4eF)")
+                        .filter(exchange -> exchange.getIn().getHeader("CamelFileName").toString().endsWith("xml"))
                         .process(fileDownloaderLogger)
                         .to("jms:placedOrder");
                 from("jms:placedOrder")
