@@ -13,6 +13,8 @@ public class Example1 extends RouteBuilder {
                 .filter(xpath("/order[not(@test)]"))
                 .log(LoggingLevel.INFO, "Received file: ${header.CamelFileName}")
                 .to("file:module-two/destination");
+
+
     }
 
 }
