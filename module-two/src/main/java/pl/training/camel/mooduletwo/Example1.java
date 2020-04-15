@@ -1,8 +1,13 @@
 package pl.training.camel.mooduletwo;
 
+import org.apache.camel.AggregationStrategy;
+import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.dataformat.BindyType;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 
 import static org.apache.camel.support.builder.PredicateBuilder.not;
 
@@ -11,11 +16,13 @@ public class Example1 extends RouteBuilder {
 
     @Override
     public void configure() {
-        from("file:module-two/source?noop=true&delay=5000")
+        /*from("file:module-two/source?noop=true&delay=5000")
                 .filter(not(header("CamelFileName").endsWith("json")))
                 .filter(xpath("/order[not(@test)]"))
                 .log(LoggingLevel.INFO, "Received file: ${header.CamelFileName}")
                 .to("jms:placedOrders");
+
+        // content based router
 
         from("jms:placedOrders")
                 .choice()
@@ -32,10 +39,14 @@ public class Example1 extends RouteBuilder {
         from("jms:cvsOrders").to("log:pl.training.camel");
         from("jms:invalidOrders").to("log:pl.training.camel");
 
-        /*from("jms:processing")
+        // multicasting
+
+        from("jms:processing")
                 .multicast()
                 .parallelProcessing()
-                .to("jms:accounting", "jms:hr");*/
+                .to("jms:accounting", "jms:hr");
+
+        // recipient list
 
         from("jms:processing")
                 //.bean(Recipients.class)
@@ -45,6 +56,20 @@ public class Example1 extends RouteBuilder {
 
         from("jms:accounting").to("log:pl.training.camel");
         from("jms:hr").to("log:pl.training.camel");
+        */
+
+        // split / aggregate
+
+        from("file:module-two/source?noop=true")
+                .filter(header("CamelFileName").endsWith("csv"))
+                .split(bodyAs(String.class).tokenize("\n"))
+                .unmarshal().bindy(BindyType.Csv, Order.class)
+                .bean(OrderProcessor.class)
+                .aggregate(header(Exchange.CORRELATION_ID), new OrderAggregationStrategy())
+                .completionSize(2)
+                .to("log:pl.training.camel");
+
+
     }
 
 }
