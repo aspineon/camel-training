@@ -1,3 +1,11 @@
 GET http://localhost:8080/greetings
 Accept: text/html
 
+###
+POST http://localhost:8080/orders
+Content-Type: application/json
+
+{
+  "name": "Camel in action",
+  "price": 100
+}
