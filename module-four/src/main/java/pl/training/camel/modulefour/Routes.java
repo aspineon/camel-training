@@ -1,6 +1,7 @@
 package pl.training.camel.modulefour;
 
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,6 +12,13 @@ public class Routes extends RouteBuilder {
         from("quartz://get?cron=0/15+*+*+*+*+?")
                 .to("http://localhost:8080/greetings")
                 .convertBodyTo(String.class)
+                .to("log:pl.training.camel");
+
+        from("file:module-four/source?noop=true")
+                .unmarshal().jacksonxml(Order.class)
+                .marshal().json()
+                .to("http://localhost:8080/orders")
+                .unmarshal().json(JsonLibrary.Jackson, Order.class)
                 .to("log:pl.training.camel");
     }
 
