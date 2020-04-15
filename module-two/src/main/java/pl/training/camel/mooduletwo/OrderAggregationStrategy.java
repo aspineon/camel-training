@@ -11,14 +11,15 @@ public class OrderAggregationStrategy implements AggregationStrategy {
     @Override
     public Exchange aggregate(Exchange oldExchange, Exchange newExchange) {
         if (oldExchange == null) {
+            List<Order> orders = new ArrayList<>();
+            Order newOrder = newExchange.getIn().getBody(Order.class);
+            orders.add(newOrder);
+            newExchange.getIn().setBody(orders);
             return newExchange;
         }
-        Order oldOrder = oldExchange.getIn().getBody(Order.class);
+        List<Order> orders = oldExchange.getIn().getBody(List.class);
         Order newOrder = newExchange.getIn().getBody(Order.class);
-        List<Order> orders = new ArrayList<>();
-        orders.add(oldOrder);
         orders.add(newOrder);
-        oldExchange.getIn().setBody(orders);
         return oldExchange;
     }
 

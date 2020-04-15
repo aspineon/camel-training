@@ -60,16 +60,32 @@ public class Example1 extends RouteBuilder {
 
         // split / aggregate
 
-        from("file:module-two/source?noop=true")
+        /*from("file:module-two/source?noop=true")
                 .filter(header("CamelFileName").endsWith("csv"))
                 .split(bodyAs(String.class).tokenize("\n"))
                 .unmarshal().bindy(BindyType.Csv, Order.class)
                 .bean(OrderProcessor.class)
                 .aggregate(header(Exchange.CORRELATION_ID), new OrderAggregationStrategy())
                 .completionSize(2)
-                .to("log:pl.training.camel");
+                .to("log:pl.training.camel");*/
 
+        // Slip router
 
+        from("jms:queueA").to("log:pl.training.camel");
+        from("jms:queueB").to("log:pl.training.camel");
+        from("jms:queueC").to("log:pl.training.camel");
+
+        /*from("file:module-two/source?noop=true")
+                .setHeader("destination").method(ComputeSlip.class)
+                .routingSlip(header("destination"), ";");
+        */
+
+        // Load balancer
+
+        from("file:module-two/source?noop=true")
+              .loadBalance().roundRobin()
+                .to("jms:queueA", "jms:queueB", "jms:queueC")
+                .end();
     }
 
 }
