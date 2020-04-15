@@ -9,3 +9,11 @@ Content-Type: application/json
   "name": "Camel in action",
   "price": 100
 }
+
+###
+
+POST http://localhost:8081/camel/orders
+Content-Type: text/xml
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<order name="Camel in action" price="200"/>

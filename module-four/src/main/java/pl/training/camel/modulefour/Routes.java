@@ -9,17 +9,34 @@ public class Routes extends RouteBuilder {
 
     @Override
     public void configure() {
-        from("quartz://get?cron=0/15+*+*+*+*+?")
+        /*from("quartz://get?cron=0/15+*+*+*+*+?")
                 .to("http://localhost:8080/greetings")
                 .convertBodyTo(String.class)
-                .to("log:pl.training.camel");
+                .to("log:pl.training.camel");*/
 
-        from("file:module-four/source?noop=true")
+        //from("file:module-four/source?noop=true")
+
+        rest("/orders")
+                .consumes("application/xml")
+                .post()
+                .to("direct:orders");
+
+        from("direct:orders")
+                .multicast()
+                .parallelProcessing()
+                .to("direct:sender", "direct:saver");
+
+        from("direct:sender")
                 .unmarshal().jacksonxml(Order.class)
                 .marshal().json()
-                .to("http://localhost:8080/orders")
+                .to("http://localhost:8080/orders?bridgeEndpoint=true")
                 .unmarshal().json(JsonLibrary.Jackson, Order.class)
                 .to("log:pl.training.camel");
+
+        from("direct:saver")
+                .to("bean:orderToSql")
+                .to("jdbc:dataSource?useHeadersAsParameters=true");
+
     }
 
 }
