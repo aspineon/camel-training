@@ -1,10 +1,9 @@
 package pl.training.camel.modulefour;
 
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.processor.errorhandler.DefaultErrorHandler;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class ExampleRoutes1 extends RouteBuilder {
 
     @Override

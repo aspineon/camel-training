@@ -9,10 +9,11 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.6.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
+
     </parent>
 
     <groupId>pl.training.camel</groupId>
-    <artifactId>module-four</artifactId>
+    <artifactId>module-five</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>

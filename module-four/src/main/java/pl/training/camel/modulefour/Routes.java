@@ -4,7 +4,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class Routes extends RouteBuilder {
 
     @Override
@@ -16,7 +16,7 @@ public class Routes extends RouteBuilder {
 
         //from("file:module-four/source?noop=true")
 
-        rest("/orders")
+        /*rest("/orders")
                 .consumes("application/xml")
                 .post()
                 .to("direct:orders");
@@ -35,7 +35,7 @@ public class Routes extends RouteBuilder {
 
         from("direct:saver")
                 .to("bean:orderToSql")
-                .to("jdbc:dataSource?useHeadersAsParameters=true");
+                .to("jdbc:dataSource?useHeadersAsParameters=true");*/
 
     }
 
