@@ -28,6 +28,11 @@ public class Routes extends RouteBuilder {
         from("seda:update?concurrentConsumers=20")
                 .bean("reportGenerator", "save");
 
+        from("jetty:http://localhost:8081/reports")
+                .convertBodyTo(String.class)
+                .to("log:pl.training.camel")
+                .to("as400:finances");
+
     }
 
 }
