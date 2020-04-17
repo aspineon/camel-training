@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 
 @Component
-@RequiredArgsConstructor
 @Data
 public class Routes extends RouteBuilder {
 
@@ -19,7 +18,6 @@ public class Routes extends RouteBuilder {
     private String filesPath;
     @Value("${orders-service}")
     private String ordersService;
-    private final Key secretKey;
 
     @Override
     public void configure() {

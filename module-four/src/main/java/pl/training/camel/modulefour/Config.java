@@ -36,8 +36,8 @@ public class Config {
 
             @Override
             public void beforeApplicationStart(CamelContext camelContext) {
-                camelContext.getEndpoint("crypto:sign://rsa?algorithm=MD5withRSA", DigitalSignatureEndpoint.class).setPrivateKey(securityPrivateKey);
-                camelContext.getEndpoint("crypto:verify://rsa?algorithm=MD5withRSA", DigitalSignatureEndpoint.class).setPublicKey(securityPublicKey);
+            //    camelContext.getEndpoint("crypto:sign://rsa?algorithm=MD5withRSA", DigitalSignatureEndpoint.class).setPrivateKey(securityPrivateKey);
+            //    camelContext.getEndpoint("crypto:verify://rsa?algorithm=MD5withRSA", DigitalSignatureEndpoint.class).setPublicKey(securityPublicKey);
             }
 
             @Override
@@ -53,7 +53,6 @@ public class Config {
         parameters.setPassword("megasecret");
         parameters.setResource("./module-four/secrets.jceks");
         parameters.setType("JCEKS");
-
         KeyStore keyStore = parameters.createKeyStore();
         return keyStore.getKey("training", "secret".toCharArray());
     }
