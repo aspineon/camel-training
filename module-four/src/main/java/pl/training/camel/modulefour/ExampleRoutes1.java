@@ -8,11 +8,11 @@ public class ExampleRoutes1 extends RouteBuilder {
 
     @Override
     public void configure() {
-        from("file://module-four/target/source")
+       /* from("file://module-four/target/source")
                 .to("file://module-four/target/destination");
 
         from("stub:jms:topic:training")
-                .to("mock:training");
+                .to("mock:training");*/
     }
 
 }

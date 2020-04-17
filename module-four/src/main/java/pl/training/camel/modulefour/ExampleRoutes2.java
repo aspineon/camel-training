@@ -17,7 +17,7 @@ public class ExampleRoutes2 extends BaseRoutes {
                     .backOffMultiplier(2)
                     .maximumRedeliveries(5));*/
 
-        errorHandler(deadLetterChannel("log:dead?level=ERROR")
+        /*errorHandler(deadLetterChannel("log:dead?level=ERROR")
             .useOriginalMessage()
             .onPrepareFailure(new FailureProcessor())
         );
@@ -39,7 +39,7 @@ public class ExampleRoutes2 extends BaseRoutes {
                     .process(new FailureProcessor())
                     .to("log:pl.training.camel")
                 .end()
-                .to("log:pl.training.camel");
+                .to("log:pl.training.camel");*/
     }
 
 }

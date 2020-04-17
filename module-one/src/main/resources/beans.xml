@@ -27,9 +27,14 @@
 
     <bean id="properties" class="org.apache.camel.component.properties.PropertiesComponent">
         <property name="location" value="classpath:training.properties"/>
+        <property name="propertiesParser" ref="jasyptParser"/>
     </bean>
 
     <bean id="fileDownloaderLogger" class="pl.training.camel.moduleone.FileDownloaderLogger"/>
+
+    <bean id="jasyptParser" class="org.apache.camel.component.jasypt.JasyptPropertiesParser">
+        <property name="password" value="secret"/>
+    </bean>
 
     <camelContext xmlns="http://camel.apache.org/schema/spring">
         <!--<routeBuilder ref="beanName"/>-->
@@ -41,7 +46,8 @@
         <!--<contextScan/>-->
 
         <route>
-            <from uri="ftp://ftp.cluster029.hosting.ovh.net/www?delay=5000&amp;delete=false&amp;username=mobiledebw&amp;password=xS2rDgt6e4eF&amp;filter=#configFileFilter"/>
+          <!--  <from uri="ftp://ftp.cluster029.hosting.ovh.net/www?delay=5000&amp;delete=false&amp;username=mobiledebw&amp;password=xS2rDgt6e4eF&amp;filter=#configFileFilter"/>-->
+            <from uri="file:module-one/source?noop=true"/>
             <process ref="fileDownloaderLogger"/>
             <to uri="jms:{{destinationQueue}}"/>
         </route>
