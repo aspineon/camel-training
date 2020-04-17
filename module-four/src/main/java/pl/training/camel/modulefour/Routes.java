@@ -27,7 +27,8 @@ public class Routes extends RouteBuilder {
                 .to("log:pl.training.camel");*/
 
 
-        //from("file:" + filesPath + "?noop=true")
+        from("file:" + filesPath + "?noop=true")
+                .to("direct:orders");
 
         rest("/orders")
                 .consumes("application/xml")

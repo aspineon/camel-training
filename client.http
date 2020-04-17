@@ -12,7 +12,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:8081/camel/orders
+POST http://localhost:8080/camel/orders
 Content-Type: text/xml
 
 <?xml version="1.0" encoding="UTF-8" ?>
