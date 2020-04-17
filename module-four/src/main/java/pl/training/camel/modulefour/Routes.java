@@ -1,12 +1,17 @@
 package pl.training.camel.modulefour;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.dataformat.CryptoDataFormat;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
+
 @Component
+@RequiredArgsConstructor
 @Data
 public class Routes extends RouteBuilder {
 
@@ -14,6 +19,7 @@ public class Routes extends RouteBuilder {
     private String filesPath;
     @Value("${orders-service}")
     private String ordersService;
+    private final Key secretKey;
 
     @Override
     public void configure() {
@@ -30,10 +36,16 @@ public class Routes extends RouteBuilder {
                 .post()
                 .to("direct:orders");
 
+        CryptoDataFormat cryptoDataFormat = new CryptoDataFormat();
+        cryptoDataFormat.setAlgorithm("DES");
+        cryptoDataFormat.setKeyRef("secretKey");
+
         from("direct:orders")
                 .convertBodyTo(String.class)
                 .to("crypto:sign://rsa?privateKey=#securityPrivateKey")
-                .convertBodyTo(String.class)
+                .marshal(cryptoDataFormat)
+                .to("log:pl.training.camel")
+                .unmarshal(cryptoDataFormat)
                 .to("log:pl.training.camel")
                 .multicast()
                 .parallelProcessing()
